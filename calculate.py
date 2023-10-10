@@ -1,9 +1,11 @@
 import torch, matplotlib.pyplot as plt, numpy as np
 from torch import Tensor
 
-k_J = 1.38e-23
+k_J = 1.380649e-23
 k_G = 20.83661912
-c = 3e8
+c = 2.99792458e8
+e = 8.8541878128e-12
+h = 6.62607015e-34
 
 class molecule():
     def __init__(
@@ -19,23 +21,24 @@ class molecule():
     def energy(self) -> Tensor:
 
         if self.type == 0:
-            J = torch.arange(0,30)
+            J = torch.arange(0,300)
             return self.rot[1]*J*(J+1)
     
     def get_lines(self,T: float) -> Tensor:
         vs,fs = [],[]
 
         if self.type == 0:
-            J = torch.arange(0,30)
+            J = torch.arange(0,300)
             E = self.energy()
             freq = torch.diff(E)
             P = (2*J + 1) * torch.exp(-E/(k_G*T))
             Q = torch.sum(P)
             frac = P/Q
             FWHM = 2*freq*np.sqrt(2*k_J*T*np.log(2)/(self.mass*c**2))
-            for (fr,F,fra) in zip(freq,FWHM,frac[1:]):
-                v = torch.linspace(fr-3*F,fr+3*F,101)
-                f = fra*np.sqrt((self.mass * c**2) / (2 * np.pi * k_J * T))*torch.exp( - (self.mass * c**2 * (v-fr)**2) / (2 * k_J * T *fr**2) )/fr
+            constant = ((self.dip[1]*3.33564e-30)**2 * 16 * np.pi**2) * np.sqrt((self.mass * c**2) / (2 * np.pi * k_J * T)) / (3 * e * h * c**3)
+            for (fr,F,fra) in zip(freq[frac[1:]>1e-5],FWHM[frac[1:]>1e-5],frac[1:][frac[1:]>1e-5]):
+                v = torch.linspace(fr-3*F,fr+3*F,100)
+                f = fra*constant*fr**2*torch.exp(-(self.mass*c**2*(v - fr)**2)/(2*k_J*T*fr**2))
                 vs += v.tolist()
                 fs += f.tolist()
             plt.plot(vs,fs)
