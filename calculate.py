@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import torch, matplotlib.pyplot as plt, numpy as np
 from torch import Tensor
 
@@ -10,27 +12,31 @@ h = 6.62607015e-34
 class molecule():
     def __init__(
             self,
-            rot: tuple,  # Rotational constants as a tuple of A,B,C in units of GHz
-            dip: tuple,  # Dipole moments along the principle axes in order of A,B,C in units of debye
-            mass: float, # Mass of the molecule in amu
-            type: int=0  # An integer to designate the type of molecule: 0 -> Diatomic, 1 -> Linear, 2 -> Spherical, 3 -> Symmetric, 4 -> Asymmetric
+            rotcon: tuple,   # Rotational constants as a tuple of A,B,C in units of GHz
+            dipole: tuple,   # Dipole moments along the principle axes in order of A,B,C in units of debye
+            mass: float,  # Mass of the molecule in amu
+            mtype: int=0,  # An integer to designate the type of molecule: 0 -> Diatomic, 1 -> Linear, 2 -> Spherical, 3 -> Symmetric, 4 -> Asymmetric
+            D_J: float=0., # Centrifugal distortion constant
+            a: tuple=(0.), # Rotation-Vibration coupling constant
+            v: tuple=(0) # vibrational quantum numbers 
             ) -> None:
-        self.rot,self.dip,self.type = rot,dip,type
+        self.rot,self.dip,self.type,self.D_J,self.a,self.v = rotcon,dipole,mtype,D_J,a,v
         self.mass = 1.66054e-27*mass
     
     def energy(self) -> Tensor:
 
         if self.type == 0:
-            J = torch.arange(0,300)
-            return self.rot[1]*J*(J+1)
+            J = torch.arange(0,30)
+            return (self.rot[1] - self.a*(self.v+0.5))*J*(J+1) - self.D_J*J**2*(J+1)**2
+
+    def frequency(self) -> Tensor:
+        return torch.diff(self.energy())
     
     def get_lines(self,T: float) -> Tensor:
         vs,fs = [],[]
 
         if self.type == 0:
-            J = torch.arange(0,300)
-            E = self.energy()
-            freq = torch.diff(E)
+            freq = self.frequency()
             P = (2*J + 1) * torch.exp(-E/(k_G*T))
             Q = torch.sum(P)
             frac = P/Q
@@ -42,7 +48,9 @@ class molecule():
                 vs += v.tolist()
                 fs += f.tolist()
             plt.plot(vs,fs)
-            plt.show()
 
-CO = molecule((0,57.897869,0),(0,0.122,0),28.01)
-CO.get_lines(100)
+CO = molecule(rotcon=(0,57.897869,0),dipole=(0,0.122,0),mass=28.01,mtype=0,D_J=0.)
+print(CO.frequency())
+CO = molecule(rotcon=(0,57.897869,0),dipole=(0,0.122,0),mass=28.01,mtype=0,D_J=0.000184,a=(0.570800),v=(0))
+print(CO.frequency())
+plt.show()
