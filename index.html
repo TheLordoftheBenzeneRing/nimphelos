@@ -2,12 +2,12 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" href="./style.css"/>
-        <!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" /> -->
-        <!-- <script defer src="https://pyscript.net/latest/pyscript.js"></script> -->
+        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
     </head>
     <body>
-        <!-- <py-config>packages = ["numpy","matplotlib"]</py-config> -->
-        <!-- <py-script src="./main.py"></py-script> -->
+        <py-config>packages = ["numpy","matplotlib"]</py-config>
+        <py-script src="./main.py"></py-script>
 
         <div class="header">
             <h1>Nimphelos</h1>
@@ -21,7 +21,7 @@
             <div class="diatomic">
                 <div class="tab_header">
                     <h2>Diatomic</h2>
-                    <button id="sim_diatomic">Simulate</button>
+                    <button id="sim_diatomic" py-click="diatomic()">Simulate</button>
                 </div>
                 <table>
                     <tr>
@@ -83,12 +83,7 @@
                 </table>
             </div>
         </div>
-
-        <!-- <input type="text" id="Temp" placeholder="Temperature (K)"> -->
-        <!-- <input type="text" id="RotCon" placeholder="Rotational Constant (MHz)"> -->
-        <!-- <input type="text" id="CenDis" placeholder="Centrifugal Distortion (MHz)"> -->
-
-        <!-- <button id="click-btn"  py-click="diatomic()">Click</button> -->
-        <!-- <div id="output"></div> -->
+        
+        <div id="output"></div>
     </body>
 </html>
