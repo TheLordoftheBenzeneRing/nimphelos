@@ -1,0 +1,84 @@
+body {
+    padding: 0%;
+    margin: 0%;
+    background-color: rgb(210, 255, 248);
+}
+
+.header {
+    background-image: url("images/spectrum.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 150px;
+}
+
+.header h1 {
+    color: black;
+    padding-left: 4%;
+    padding-top: 50px;
+    margin-top: 0%;
+    font-size: 450%;
+    font-family: "Georgia";
+}
+
+.temp {
+    border-color: black;
+    border-top: 5px solid;
+    padding-left: 10px;
+}
+
+.tabs {
+    display: flex;
+}
+
+.diatomic {
+    background-color: whitesmoke;
+    width: 33%;
+    border: solid;
+    border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    margin-left: 5px;
+    margin-right: 2.5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.symmetric {
+    background-color: whitesmoke;
+    width: 33%;
+    border: solid;
+    border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.asymmetric {
+    background-color: whitesmoke;
+    width: 33%;
+    border: solid;
+    border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    margin-left: 2.5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.tab_header {
+    display: flex;
+}
+
+.tab_header button {
+    margin-left: auto;
+    margin-right: 10px;
+    height: fit-content;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 100%;
+}

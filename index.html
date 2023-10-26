@@ -1,18 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+        <link rel="stylesheet" href="./style.css"/>
+        <!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" /> -->
+        <!-- <script defer src="https://pyscript.net/latest/pyscript.js"></script> -->
     </head>
     <body>
-        <py-config>packages = ["numpy","matplotlib"]</py-config>
-        <py-script src="./main.py"></py-script>
+        <!-- <py-config>packages = ["numpy","matplotlib"]</py-config> -->
+        <!-- <py-script src="./main.py"></py-script> -->
 
-        <input type="text" id="Temp" placeholder="Temperature (K)">
-        <input type="text" id="RotCon" placeholder="Rotational Constant (MHz)">
-        <input type="text" id="CenDis" placeholder="Centrifugal Distortion (MHz)">
+        <div class="header">
+            <h1>Nimphelos</h1>
+        </div>
 
-        <button id="click-btn"  py-click="diatomic()">Click</button>
-        <div id="output"></div>
+        <div class="temp">
+            <p>Temperature: <input type="text" id="Temp" placeholder="Temperature (K)"></p>
+        </div>
+
+        <div class="tabs">
+            <div class="diatomic">
+                <div class="tab_header">
+                    <h2>Diatomic</h2>
+                    <button id="sim_diatomic">Simulate</button>
+                </div>
+                <table>
+                    <tr>
+                        <td>B:</td>
+                        <td><input type="text" id="RotCon1" placeholder="Rotational Constant (MHz)"></td>
+                    </tr>
+                    <tr>
+                        <td>D:</td>
+                        <td><input type="text" id="CenDis1" placeholder="Centrifugal Distortion (MHz)"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="symmetric">
+                <div class="tab_header">
+                    <h2>Symmetric Top</h2>
+                    <button id="sim_symmetric">Simulate</button>
+                </div>
+                <table>
+                    <tr>
+                        <td>A:</td>
+                        <td><input type="text" id="RotCon2A" placeholder="Rotational Constant (MHz)"></td>
+                    </tr>
+                    <tr>
+                        <td>C:</td>
+                        <td><input type="text" id="RotCon2C" placeholder="Rotational Constant (MHz)"></td>
+                    </tr>
+                    <tr>
+                        <td>D<sub>J</sub>:</td>
+                        <td><input type="text" id="CenDis2J" placeholder="Centrifugal Distortion (MHz)"></td>
+                    </tr>
+                    <tr>
+                        <td>D<sub>JK</sub>:</td>
+                        <td><input type="text" id="CenDis2JK" placeholder="Centrifugal Distortion (MHz)"></td>
+                    </tr>
+                    <tr>
+                        <td>D<sub>K</sub>:</td>
+                        <td><input type="text" id="CenDis2K" placeholder="Centrifugal Distortion (MHz)"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="asymmetric">
+                <div class="tab_header">
+                    <h2>Asymmetric Top</h2>
+                    <button id="sim_asymmetric">Simulate</button>
+                </div>
+                <table>
+                    <tr>
+                        <td>A:</td>
+                        <td><input type="text" id="RotCon3A" placeholder="Rotational Constant (MHz)"></td>
+                    </tr>
+                    <tr>
+                        <td>B:</td>
+                        <td><input type="text" id="RotCon3B" placeholder="Rotational Constant (MHz)"></td>
+                    </tr>
+                    <tr>
+                        <td>C:</td>
+                        <td><input type="text" id="RotCon3C" placeholder="Rotational Constant (MHz)"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- <input type="text" id="Temp" placeholder="Temperature (K)"> -->
+        <!-- <input type="text" id="RotCon" placeholder="Rotational Constant (MHz)"> -->
+        <!-- <input type="text" id="CenDis" placeholder="Centrifugal Distortion (MHz)"> -->
+
+        <!-- <button id="click-btn"  py-click="diatomic()">Click</button> -->
+        <!-- <div id="output"></div> -->
     </body>
 </html>
