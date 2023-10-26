@@ -7,7 +7,7 @@ e = 8.8541878128e-12
 h = 6.62607015e-34
 
 def diatomic():
-    temperature,B,D = float(Element("Temp").element.value),float(Element("RotCon").element.value),float(Element("CenDis").element.value)
+    temperature,B,D = float(Element("Temp").element.value),float(Element("RotCon1").element.value),float(Element("CenDis1").element.value)
 
     J = np.arange(0,100)
     energy = B*J*(J+1) - D*J**2*(J+1)**2
