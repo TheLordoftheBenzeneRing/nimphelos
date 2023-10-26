@@ -37,7 +37,7 @@
             <div class="symmetric">
                 <div class="tab_header">
                     <h2>Symmetric Top</h2>
-                    <button id="sim_symmetric">Simulate</button>
+                    <button id="sim_symmetric" py-click="create_table()">Simulate</button>
                 </div>
                 <table>
                     <tr>
@@ -83,7 +83,16 @@
                 </table>
             </div>
         </div>
-        
+
+        <div id="displayables" style="display:none">
+            <table>
+                <tr>
+                    <td>Display</td>
+                    <td>Label</td>
+                </tr>
+            </table>
+        </div>
+
         <div id="output"></div>
     </body>
 </html>
