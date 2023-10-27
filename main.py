@@ -1,8 +1,9 @@
 import numpy as np,matplotlib.pyplot as plt
+from js import document
 
 def create_table():
-    table_element = Element("displayables")
-    table_element.select(".display:none").remove_class("display:none")
+    temp = document.getElementById("displayables")
+    temp.setAttribute("style","display:block")
 
 k_J = 1.380649e-23
 k_M = 20.83661912e3
@@ -17,6 +18,8 @@ def diatomic():
     energy = B*J*(J+1) - D*J**2*(J+1)**2
     frequency = np.diff(energy)
     FWHM = 2*frequency*np.sqrt((2*k_J*temperature*np.log(2))/(1e-27*c**2))
+
+    create_table()
 
     # weight = (2*J + 1) * np.exp(-energy/(k_M*temperature))
     # Q = np.sum(weight)
