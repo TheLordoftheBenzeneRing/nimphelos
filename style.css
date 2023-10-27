@@ -84,15 +84,16 @@ body {
 }
 
 .display_table {
-    width: 100%;
+    width: 99%;
     border: 2px solid black;
-    border-radius: 5px;
+    border-collapse: collapse;
     margin-left: 5px;
     margin-right: 5px;
 }
 .display_table th,.display_table td {
     text-align: center;
-    border-right: 2px solid black;
+    border: 2px solid black;
+    border-radius: 5px;
     border-collapse: collapse;
     padding: 0%;
 }

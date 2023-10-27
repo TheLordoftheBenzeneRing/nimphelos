@@ -1,9 +1,18 @@
 import numpy as np,matplotlib.pyplot as plt
 from js import document
 
-def create_table():
-    temp = document.getElementById("displayables")
-    temp.setAttribute("style","display:block")
+def create_table(top:str):
+    temp = document.getElementById("data_table")
+    # temp.setAttribute("style","display:block")
+    if top == "diatomic":
+        content = temp.innerHTML.replace("</tbody>","<tr>\n<td><input type=\"checkbox\"></td><td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n</tr>\n</tbody>".format("Diatomic1","",Element("RotCon1").element.value,"",Element("CenDis1").element.value,"","",Element("Temp").element.value))
+    elif top == "symmetric":
+        content = temp.innerHTML.replace("</tbody>","<tr>\n<td><input type=\"checkbox\"></td><td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n</tr>\n</tbody>".format("Symmetric1",Element("RotCon2A").element.value,"",Element("RotCon2C").element.value,Element("CenDis2J").element.value,Element("CenDis2JK").element.value,Element("CenDis2K").element.value,Element("Temp").element.value))
+    elif top == "asymmetric":
+        content = temp.innerHTML.replace("</tbody>","<tr>\n<td><input type=\"checkbox\"></td><td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n<td>{}</td>\n</tr>\n</tbody>".format("Symmetric1",Element("RotCon3A").element.value,Element("RotCon3B").element.value,Element("RotCon3C").element.value,"","","",Element("Temp").element.value))
+    else:
+        pass
+    temp.innerHTML = content
 
 k_J = 1.380649e-23
 k_M = 20.83661912e3
@@ -12,14 +21,16 @@ e = 8.8541878128e-12
 h = 6.62607015e-34
 
 def diatomic():
-    temperature,B,D = float(Element("Temp").element.value),float(Element("RotCon1").element.value),float(Element("CenDis1").element.value)
+    create_table("diatomic")
 
-    J = np.arange(0,100)
-    energy = B*J*(J+1) - D*J**2*(J+1)**2
-    frequency = np.diff(energy)
-    FWHM = 2*frequency*np.sqrt((2*k_J*temperature*np.log(2))/(1e-27*c**2))
+    # temperature,B,D = float(Element("Temp").element.value),float(Element("RotCon1").element.value),float(Element("CenDis1").element.value)
 
-    create_table()
+    # J = np.arange(0,100)
+    # energy = B*J*(J+1) - D*J**2*(J+1)**2
+    # frequency = np.diff(energy)
+    # FWHM = 2*frequency*np.sqrt((2*k_J*temperature*np.log(2))/(1e-27*c**2))
+
+    # create_table()
 
     # weight = (2*J + 1) * np.exp(-energy/(k_M*temperature))
     # Q = np.sum(weight)
@@ -35,3 +46,9 @@ def diatomic():
     #     lines += line.tolist()
     # plt.plot(nus,np.array(lines)/max(lines))
     # display(plt,target="output")
+
+def symmetric():
+    create_table("symmetric")
+
+def asymmetric():
+    create_table("asymmetric")

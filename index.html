@@ -37,7 +37,7 @@
             <div class="symmetric">
                 <div class="tab_header">
                     <h2>Symmetric Top</h2>
-                    <button id="sim_symmetric" py-click="create_table()">Simulate</button>
+                    <button id="sim_symmetric" py-click="symmetric()">Simulate</button>
                 </div>
                 <table>
                     <tr>
@@ -65,7 +65,7 @@
             <div class="asymmetric">
                 <div class="tab_header">
                     <h2>Asymmetric Top</h2>
-                    <button id="sim_asymmetric">Simulate</button>
+                    <button id="sim_asymmetric" py-click="asymmetric()">Simulate</button>
                 </div>
                 <table>
                     <tr>
@@ -85,7 +85,7 @@
         </div>
 
         <div>
-            <table class="display_table">
+            <table class="display_table" id="data_table">
                 <tr>
                     <th> <input type="checkbox"> </th>
                     <th>Label</th>
@@ -97,10 +97,6 @@
                     <th>D<sub>K</sub></th>
                     <th>Temperature</th>
                 </tr>
-                <!-- <tr>
-                    <td> <input type="checkbox"> </td>
-                    <td></td>
-                </tr> -->
             </table>
         </div>
     </body>
