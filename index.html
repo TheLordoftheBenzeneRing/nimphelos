@@ -41,6 +41,12 @@
                 </div>
                 <table>
                     <tr>
+                        <select id="top">
+                            <option value="prolate">Prolate</option>
+                            <option value="oblate">Oblate</option>
+                        </select>
+                    </tr>
+                    <tr>
                         <td>A:</td>
                         <td><input type="text" id="RotCon2A" placeholder="Rotational Constant (MHz)"></td>
                     </tr>
@@ -71,33 +77,42 @@
                     <tr>
                         <td>A:</td>
                         <td><input type="text" id="RotCon3A" placeholder="Rotational Constant (MHz)"></td>
+                        <td><input type="checkbox" id="dipA" checked></td>
                     </tr>
                     <tr>
                         <td>B:</td>
                         <td><input type="text" id="RotCon3B" placeholder="Rotational Constant (MHz)"></td>
+                        <td><input type="checkbox" id="dipB" checked></td>
                     </tr>
                     <tr>
                         <td>C:</td>
                         <td><input type="text" id="RotCon3C" placeholder="Rotational Constant (MHz)"></td>
+                        <td><input type="checkbox" id="dipC" checked></td>
                     </tr>
                 </table>
             </div>
         </div>
 
-        <div>
-            <table class="display_table" id="data_table">
+        <table class="display_table" id="data_table" style="width: 100%;table-layout: fixed;margin-left: 5px;margin-right: 5px;">
+            <tbody>
                 <tr>
-                    <th> <input type="checkbox"> </th>
-                    <th>Label</th>
-                    <th>A</th>
-                    <th>B</th>
-                    <th>C</th>
-                    <th>D<sub>J</sub></th>
-                    <th>D<sub>JK</sub></th>
-                    <th>D<sub>K</sub></th>
-                    <th>Temperature</th>
+                    <th width="5%"></th>
+                    <th width="20%">Label</th>
+                    <th width="10%">A</th>
+                    <th width="10%">B</th>
+                    <th width="10%">C</th>
+                    <th width="10%">D<sub>J</sub></th>
+                    <th width="10%">D<sub>JK</sub></th>
+                    <th width="10%">D<sub>K</sub></th>
+                    <th width="15%">Temperature</th>
                 </tr>
-            </table>
+            </tbody>
+        </table>
+
+        <div id="output"></div>
+
+        <div class="plot">
+            <button py-click="plot()">Plot Spectra</button>
         </div>
     </body>
 </html>
