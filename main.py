@@ -129,12 +129,17 @@ def plot_spectrum(labels,temperature,designation):
             weight.append((2*j + 1) * np.exp(-energy[index]/(k_M*temperature)))
         frequency,FWHM,fraction = np.array(frequency),np.array(FWHM),np.array(weight)/Q
     elif len(labels) == 5:
+        dipA,dipB,dipC = False,False,False
+        for i in range(document.getElementById("data_table").rows.length):
+            if document.getElementById("data_table").rows[i].cells[1].innerHTML == designation:
+                if "<b>" in document.getElementById("data_table").rows[i].cells[2].innerHTML: dipA = True
+                if "<b>" in document.getElementById("data_table").rows[i].cells[3].innerHTML: dipB = True
+                if "<b>" in document.getElementById("data_table").rows[i].cells[4].innerHTML: dipC = True
         J,Ka,Kc,energy,Q = labels
         frequency,FWHM,weight = [],[],[]
         for index,j in enumerate(J):
             if j == 0: continue
-            if document.querySelector("#dipA").checked:
-                print("A")
+            if dipA:
                 ka,e = Kc[J==j-1][Ka[J==j-1] == Ka[index]],energy[J==j-1][Ka[J==j-1] == Ka[index]]
                 if np.size(ka) != 0:
                     for k in range(len(ka)):
@@ -143,8 +148,7 @@ def plot_spectrum(labels,temperature,designation):
                             frequency.append(freq)
                             FWHM.append(2*freq*np.sqrt((2*k_J*temperature*np.log(2))/(1e-27*c**2)))
                             weight.append((2*j + 1) * np.exp(-energy[index]/(k_M*temperature)))
-            if document.querySelector("#dipB").checked:
-                print("B")
+            if dipB:
                 ka,kc,e = Ka[J==j-1],Kc[J==j-1],energy[J==j-1]
                 for k in range(len(ka)):
                     if (ka[k] == Ka[index]+1 or ka[k] == Ka[index]-1) and (kc[k] == Kc[index]+1 or kc[k] == Kc[index]-1):
@@ -153,8 +157,7 @@ def plot_spectrum(labels,temperature,designation):
                         frequency.append(freq)
                         FWHM.append(2*freq*np.sqrt((2*k_J*temperature*np.log(2))/(1e-27*c**2)))
                         weight.append((2*j + 1) * np.exp(-energy[index]/(k_M*temperature)))
-            if document.querySelector("#dipC").checked:
-                print("C")
+            if dipC:
                 kc,e = Ka[J==j-1][Kc[J==j-1] == Kc[index]],energy[J==j-1][Kc[J==j-1] == Kc[index]]
                 if np.size(kc) != 0:
                     for k in range(len(kc)):
