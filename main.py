@@ -5,9 +5,11 @@ from js import document
 
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["font.serif"] = "cmr10, Computer Modern Serif, DejaVu Serif"
+plt.rcParams['font.size'] = 12
 plt.rcParams["axes.formatter.use_mathtext"] = True
 plt.rcParams["mathtext.fontset"] = "cm"
-plt.rcParams['figure.figsize'] = [10, 6]
+plt.rcParams['figure.figsize'] = [12, 6]
+plt.rcParams["figure.autolayout"] = True
 
 name,energies = [],[]
 
@@ -28,7 +30,11 @@ def create_table(top:str):
         for n in name:
             if "Asymmetric" in n: num += 1
         name.append("Asymmetric{}".format(str(num)))
-        content = temp.innerHTML.replace("</tbody>","<tr>\n<td width=\"5%\"><input type=\"checkbox\" id=\"{}\"></td><td class=\"label_column\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"15%\">{}</td>\n</tr>\n</tbody>".format("Asymmetric{}".format(str(num)),"Asymmetric{}".format(str(num)),Element("RotCon3A").element.value,Element("RotCon3B").element.value,Element("RotCon3C").element.value,"","","",Element("Temp").element.value))
+        string = "<tr>\n<td width=\"5%\"><input type=\"checkbox\" id=\"{}\"></td><td class=\"label_column\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"10%\">{}</td>\n<td width=\"15%\">{}</td>\n</tr>\n</tbody>".format("Asymmetric{}".format(str(num)),"Asymmetric{}".format(str(num)),Element("RotCon3A").element.value,Element("RotCon3B").element.value,Element("RotCon3C").element.value,"","","",Element("Temp").element.value)
+        if document.querySelector("#dipA").checked: string = string.replace("{}".format(Element("RotCon3A").element.value),"<b>{}</b>".format(Element("RotCon3A").element.value))
+        if document.querySelector("#dipB").checked: string = string.replace("{}".format(Element("RotCon3B").element.value),"<b>{}</b>".format(Element("RotCon3B").element.value))
+        if document.querySelector("#dipC").checked: string = string.replace("{}".format(Element("RotCon3C").element.value),"<b>{}</b>".format(Element("RotCon3C").element.value))
+        content = temp.innerHTML.replace("</tbody>",string)
     else:
         pass
     temp.innerHTML = content
@@ -39,7 +45,7 @@ c = 2.99792458e8
 epsilon = 8.8541878128e-12
 h = 6.62607015e-34
 
-def maximum_J(B: float,T: float): return ceil(0.5*np.sqrt(1 - (k_M*T/B)*np.log((1e-60)*k_M*T/B)) - 0.5)
+def maximum_J(B: float,T: float): return ceil(0.5*np.sqrt(1 - (k_M*T/B)*np.log((1e-30)*k_M*T/B)) - 0.5)
 
 def diatomic():
     create_table("diatomic")
@@ -105,7 +111,7 @@ def asymmetric():
     Q = np.sum((2*J + 1) * np.exp(-energy/(k_M*temperature)))
     energies.append((J,Ka,Kc,energy,Q))
 
-def plot_spectrum(labels,temperature):
+def plot_spectrum(labels,temperature,designation):
     if len(labels) == 3:
         J,energy,Q = labels
         frequency = np.diff(energy)
@@ -128,6 +134,7 @@ def plot_spectrum(labels,temperature):
         for index,j in enumerate(J):
             if j == 0: continue
             if document.querySelector("#dipA").checked:
+                print("A")
                 ka,e = Kc[J==j-1][Ka[J==j-1] == Ka[index]],energy[J==j-1][Ka[J==j-1] == Ka[index]]
                 if np.size(ka) != 0:
                     for k in range(len(ka)):
@@ -137,6 +144,7 @@ def plot_spectrum(labels,temperature):
                             FWHM.append(2*freq*np.sqrt((2*k_J*temperature*np.log(2))/(1e-27*c**2)))
                             weight.append((2*j + 1) * np.exp(-energy[index]/(k_M*temperature)))
             if document.querySelector("#dipB").checked:
+                print("B")
                 ka,kc,e = Ka[J==j-1],Kc[J==j-1],energy[J==j-1]
                 for k in range(len(ka)):
                     if (ka[k] == Ka[index]+1 or ka[k] == Ka[index]-1) and (kc[k] == Kc[index]+1 or kc[k] == Kc[index]-1):
@@ -146,6 +154,7 @@ def plot_spectrum(labels,temperature):
                         FWHM.append(2*freq*np.sqrt((2*k_J*temperature*np.log(2))/(1e-27*c**2)))
                         weight.append((2*j + 1) * np.exp(-energy[index]/(k_M*temperature)))
             if document.querySelector("#dipC").checked:
+                print("C")
                 kc,e = Ka[J==j-1][Kc[J==j-1] == Kc[index]],energy[J==j-1][Kc[J==j-1] == Kc[index]]
                 if np.size(kc) != 0:
                     for k in range(len(kc)):
@@ -165,25 +174,18 @@ def plot_spectrum(labels,temperature):
         nus += nu.tolist()
         lines += line.tolist()
     nus,lines = np.array(nus),np.array(lines)
-    plt.plot(nus/10**6,lines/np.max(lines))
+    plt.plot(nus/10**6,lines/np.max(lines),label=designation)
 
 def plot():
     temp = document.getElementById("data_table")
     plt.clf()
     for i in range(1,len(name)+1):
         if temp.rows[i].cells[0].querySelector("input[type='checkbox']").checked:
-            plot_spectrum(energies[i-1],float(temp.rows[i].cells[-1].innerHTML))
+            plot_spectrum(energies[i-1],float(temp.rows[i].cells[-1].innerHTML),name[i-1])
     document.getElementById("output").innerHTML = ""
+    plt.xlabel("Frequency (MHz)")
+    plt.ylabel("Normalized Arb. Intensity")
+    plt.legend(loc="upper right")
+    if Element("lbound").element.value != "": plt.xlim(left=float(Element("lbound").element.value))
+    if Element("ubound").element.value != "": plt.xlim(right=float(Element("ubound").element.value))
     display(plt,target="output")
-
-# print(temp.rows[1].cells[0])
-
-
-
-# plot_spectrum(diatomic(10,57635.96828,0.1835058),5.,10)
-# plot_spectrum(symmetric(10,20000,10000,0.25,0.13,0.01,"prolate"),5.,10)
-# plot_spectrum(symmetric(10,20000,10000,0.25,0.13,0.01,"oblate"),5.,10)
-# plot_spectrum(asymmetric(10,57000,25000,20000),5.,10)
-# plot_spectrum(asymmetric(20,57000,25000,20000),5.,20)
-# plot_spectrum(asymmetric(100,283300.659,38912.345,34078.056),5.,100)
-# plt.show()

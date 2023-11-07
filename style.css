@@ -98,3 +98,16 @@ body {
     border-collapse: collapse;
     text-align: center;
 }
+
+.display_table {
+    background-color: whitesmoke;
+}
+
+.plots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-left: 5px;
+    padding-top: 5px;
+}
